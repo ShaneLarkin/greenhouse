@@ -12,6 +12,13 @@ var waterOffTimerValSecs;
 var waterOnDeviceState = false ;
 var temperatureOnDeviceState = false;
 
+// make this better
+sliderWaterOnMins.oninput = function() {
+alert("Stuff happened");
+  //outputWaterOnMins.innerHTML = this.value;
+	document.getElementById("waterOnMinOP").value = this.value; 
+}
+
 
 // focus on the user name on logon page
 function focusUserLogin() {
@@ -75,4 +82,14 @@ console.log('In turnWaterOff()');
 	changeButtonColour('waterOnButton','#0069ed');
 	// do below - not document.getElementById("waterOffControlForm").submit();
 	$('#waterOffControlForm').submit();
+}
+
+// section for sliders
+function showValueInSlider(sliderVal, outputDisplayID) {
+alert(sliderVal);
+alert(outputDisplayID);
+//document.getElementByID(outputDisplayID).value = sliderVal;
+document.getElementByID("waterOnMinsOP").value = sliderVal;
+alert('Doof!');
+
 }

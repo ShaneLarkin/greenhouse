@@ -119,7 +119,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 						</tr>
 						<!--Let's try a "settings" button -->
 						<tr>
-							<td>
+							<td class="topPadded">
 								<button type="submit" name="temperatureButton" id="temperatureButton"
 									style="color:#ff8c00"
 									onclick="document.getElementById('settings').style.visibility='visible'">
@@ -131,12 +131,53 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td class="topPadded">
 				<div class="startHidden" name="settings" id="settings">
 					<table>
 						<tr>
 							<td>
-							I am settings
+							<!-- table for setting displays and savings  -->
+								<table>
+									<tr>
+										<td> <!-- Displays for sliders  -->
+											<textarea rows="3" cols="3" readonly
+                                 				id = "waterOnMinsOP"  name="waterOnMinsOP" ></textarea>
+										</td>
+										<td>
+											<textarea rows="3" cols="3" readonly
+                                 				id = "moistureThresholdOP" ></textarea>
+										</td>
+										<td>
+											<textarea rows="3" cols="3" readonly
+                                 				id = "moistureCheckMinsOP" ></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td> <!-- sliders -->
+											<div class="slidecontainer">
+  												<input type="range" min="1" max="100" value="50" 
+													class="slider" id="waterOnMinsSlide" onchange="showValueInSlider(this.value,'waterOnMinsOP')">
+											</div>
+										</td>
+										<td>
+											<div class="slidecontainer">
+  												<input type="range" min="1" max="100" value="50" 
+													class="slider" id="moistureThresholdSlide" onchange="alert('Hmmmm')">
+											</div>
+										</td>
+										<td>
+											<div class="slidecontainer">
+  												<input type="range" min="1" max="100" value="50" 
+													class="slider" id="moistureCheckMinsSlide" onchange="">
+											</div>
+										</td>
+									</tr>
+									<tr> <!-- slider labels -->
+										<td>Water On Mins</td>
+										<td>Moisture Threshold</td>
+										<td>Moisture Check Mins</td>
+									</tr>
+								</table>
 							</td>
 						</tr>
 					</table>

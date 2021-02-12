@@ -118,7 +118,8 @@ console.log(jsonData);
                 else
                 {
 					// curl call failed
-					document.getElementById("statusArea").value = "Curl temp call failed";
+					document.getElementById("statusArea").value = "Temp call failed";
+					alert(jsonData.output);
                 }
            }
        });
