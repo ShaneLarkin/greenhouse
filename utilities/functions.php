@@ -47,4 +47,22 @@ function extractRemainderAfterMatch($string,$match) {
  
 	return $remainder;
 }
+
+function openDatabase ($databaseName, $mode) {
+	$db = new SQLite3->open($databaseName,$mode);
+	return $db;
+}
+
+function closeDatabase ($databaseHandle) {
+	$databaseHandle->close();
+}
+
+function writeToDatabase() {
+
+}
+
+function readFromDatabase (queryString, database) {
+
+}
+
 ?>

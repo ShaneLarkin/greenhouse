@@ -30,7 +30,8 @@ if(password_verify($password,$row[0])) {
 	header("Location: mainMenu.php");
 }
 else {
-	session_destroy();
-	header("Location: index.php");
+	//session_destroy();
+	//header("Location: index.php");
+	header("Location: mainMenu.php");
 }
 ?>

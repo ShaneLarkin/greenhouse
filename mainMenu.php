@@ -5,9 +5,9 @@ require_once("utilities/constants.php");
 session_start();
 
 // If no valid logon, go to index page
-if(!checkValidLogon()) {
-	header("Location: index.php");
-}
+//if(!checkValidLogon()) {
+//	header("Location: index.php");
+//}
 
 ?>
 
@@ -96,8 +96,6 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 								<form name="temperatureControlForm" id="temperatureControlForm" method="POST">
 									<button type="submit" name="temperatureButton" id="temperatureButton"
 										onclick="document.getElementById('temperatureDisplay').style.visibility='visible'">Temp Show</button>
-									<!-- button type="submit" name="temperatureButton" id="temperatureButton"
-										onclick="document.getElementById('temperatureDisplay').style.display='block'">Temperature</button -->
 								</form>
 							</td>
 						</tr>
@@ -141,7 +139,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 									<tr>
 										<td> <!-- Displays for sliders  -->
 											<textarea rows="3" cols="3" readonly
-                                 				id = "waterOnMinsOP"  name="waterOnMinsOP" ></textarea>
+                                 				id = "waterOnMinsOP"></textarea>
 										</td>
 										<td>
 											<textarea rows="3" cols="3" readonly
@@ -162,13 +160,13 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 										<td>
 											<div class="slidecontainer">
   												<input type="range" min="1" max="100" value="50" 
-													class="slider" id="moistureThresholdSlide" onchange="alert('Hmmmm')">
+													class="slider" id="moistureThresholdSlide" onchange="showValueInSlider(this.value,'moistureThresholdOP')">
 											</div>
 										</td>
 										<td>
 											<div class="slidecontainer">
   												<input type="range" min="1" max="100" value="50" 
-													class="slider" id="moistureCheckMinsSlide" onchange="">
+													class="slider" id="moistureCheckMinsSlide" onchange="showValueInSlider(this.value,'moistureCheckMinsOP')">
 											</div>
 										</td>
 									</tr>
@@ -177,9 +175,29 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 										<td>Moisture Threshold</td>
 										<td>Moisture Check Mins</td>
 									</tr>
-								</table>
+						</tr>
+						<!-- save, cancel and reset for settings  -->
+						<tr>
+							<td>
+								<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton"
+									style="color:#ff8c00"
+									onclick="">Save
+								</button>
+							</td>
+							<td>
+								<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
+									style="color:#ff8c00"
+									onclick="">Cancel
+								</button>
+							</td>
+							<td>
+								<button type="submit" name="settingsResetButton" id="settingsResetButton"
+									style="color:#ff8c00"
+									onclick="">Reset
+								</button>
 							</td>
 						</tr>
+						</table>
 					</table>
 				</div>
 			</td>

@@ -9,15 +9,14 @@ var waterOffTimerHandle;
 var waterOffTimerValSecs;
 
 // Flags for colour on button for water on and temerature
-var waterOnDeviceState = false ;
+var waterOnDeviceState = false;
 var temperatureOnDeviceState = false;
 
 // make this better
-sliderWaterOnMins.oninput = function() {
-alert("Stuff happened");
-  //outputWaterOnMins.innerHTML = this.value;
-	document.getElementById("waterOnMinOP").value = this.value; 
-}
+// waterOnMinsSlide.oninput = function() {
+//	document.getElementById("waterOnMinsOP").value = this.value; 
+//alert(this.value);
+//}
 
 
 // focus on the user name on logon page
@@ -45,8 +44,8 @@ function clearLogonPage() {
 	document.getElementById("userField").value = "";
 	document.getElementById("passwordField").value = "";
 	document.getElementById("userField").focus();
-
 }
+
 // this is for toggling buttons
 function activeButtonClick(btnID,colour,deviceState) {
 	var property = document.getElementById(btnID);
@@ -86,10 +85,6 @@ console.log('In turnWaterOff()');
 
 // section for sliders
 function showValueInSlider(sliderVal, outputDisplayID) {
-alert(sliderVal);
-alert(outputDisplayID);
-//document.getElementByID(outputDisplayID).value = sliderVal;
-document.getElementByID("waterOnMinsOP").value = sliderVal;
-alert('Doof!');
-
+	document.getElementById(outputDisplayID).value = sliderVal;
+	//document.getElementById("waterOnMinsOP").value = sliderVal;
 }
