@@ -48,20 +48,21 @@ function extractRemainderAfterMatch($string,$match) {
 	return $remainder;
 }
 
-function openDatabase ($databaseName, $mode) {
-	$db = new SQLite3->open($databaseName,$mode);
-	return $db;
+function openDatabase ($databaseName) {
+	$dbh = new SQLite3($databaseName);
+	return $dbh;
 }
 
 function closeDatabase ($databaseHandle) {
 	$databaseHandle->close();
 }
 
-function writeToDatabase() {
+function executeDatabaseCommand($databaseHandle, $query, $returnMode) {
+// do binds
 
-}
+// execute
 
-function readFromDatabase (queryString, database) {
+// return results
 
 }
 

@@ -1,7 +1,9 @@
 <?php
-	/* processLogon.php - if OK sets value 
-	   in session. If not calls logon page again */
-	session_start();
+/* processLogon.php - if OK sets value 
+   in session. If not calls logon page again */
+require_once("utilities/functions.php");
+require_once("utilities/constants.php");
+session_start();
 	$name = $_POST["userField"];
 	$password = $_POST["passwordField"];
 
@@ -11,11 +13,14 @@
 	}
 
 // get stored password from database and compare 
-$db = new SQLite3("databases/greenhouse.db");
+//$db = new SQLite3("databases/greenhouse.db");
+$db = openDatabase("databases/greenhouse.db");
+
 $statement = $db->prepare("SELECT password from Users where user = :name");
 $statement->bindValue(':name',$name,SQLITE3_TEXT);
 $results = $statement->execute();
 $row = $results->fetchArray();
+closeDatabase($db);
 
 // user and password accepted so set user nam on session
 // then parse the config file and add the vlaues to the session
