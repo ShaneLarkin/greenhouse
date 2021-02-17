@@ -48,22 +48,52 @@ function extractRemainderAfterMatch($string,$match) {
 	return $remainder;
 }
 
-function openDatabase ($databaseName) {
-	$dbh = new SQLite3($databaseName);
+function openDatabase($dbName) {
+	try {
+			$dbh = new SQLite3($dbName);
+	} catch (Exception $e) {
+		echo 'Caught exception" ' . $e->getMessage();
+		echo(" in openDatabase()");
+		exit();
+	} 
+
+
 	return $dbh;
 }
 
-function closeDatabase ($databaseHandle) {
-	$databaseHandle->close();
+function closeDatabase($dbh) {
+	$dbh->close();
 }
 
-function executeDatabaseCommand($databaseHandle, $query, $returnMode) {
-// do binds
+function executeDbCommand($dbh, $query) {
+	try {
+		$resultSet = $dbh->query($query);
+	} catch (Exception $e) {
+		echo 'Caught exception" ' . $e->getMessage();
+		echo(" in executeDbCommand()");
+		exit();
+	}
 
-// execute
-
-// return results
-
+	return $resultSet;
 }
 
+function processResultset($resultSet) {
+	//return 1;
+}
+
+function deviceInitialised() {
+	// conect to database
+	$db =  openDatabase("databases/greenhouse.db");
+	// check if initialised
+	$query = "SELECT * from setupStatus";
+	$results = executeDbCommand($db,$query);
+	$row = $results->fetchArray();
+	// close database
+	closeDatabase($db);
+	// return result
+	if($row[1] == '0') {
+		return false;
+	}
+	return true;
+}
 ?>

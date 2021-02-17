@@ -13,20 +13,17 @@ session_start();
 	}
 
 // get stored password from database and compare 
-//$db = new SQLite3("databases/greenhouse.db");
-$db = openDatabase("databases/greenhouse.db");
-
-$statement = $db->prepare("SELECT password from Users where user = :name");
-$statement->bindValue(':name',$name,SQLITE3_TEXT);
-$results = $statement->execute();
+$db =  openDatabase("databases/greenhouse.db");
+$query = "SELECT password from Users where user = '$name'";
+$results = executeDbCommand($db,$query);
 $row = $results->fetchArray();
 closeDatabase($db);
 
-// user and password accepted so set user nam on session
-// then parse the config file and add the vlaues to the session
+// user and password accepted so set user name on session
+// then parse the config file and add the valaues to the session
 if(password_verify($password,$row[0])) {
 	$_SESSION["user"]=$name;
-	// read config.ini and set vlaues in session
+	// read config.ini and set values in session
 	$configArray = parse_ini_file("config/config.ini");
 	foreach($configArray as $setting => $value) {
 		$_SESSION[$setting]=$value;
@@ -35,6 +32,7 @@ if(password_verify($password,$row[0])) {
 	header("Location: mainMenu.php");
 }
 else {
+	// below just during dev to stop constant logging
 	//session_destroy();
 	//header("Location: index.php");
 	header("Location: mainMenu.php");

@@ -5,6 +5,7 @@ require_once("utilities/constants.php");
 session_start();
 
 // If no valid logon, go to index page
+// comment out during dev to stop constant logons
 //if(!checkValidLogon()) {
 //	header("Location: index.php");
 //}
@@ -28,7 +29,13 @@ session_start();
 // var_dump($_SESSION);
 // get the value in seconds for Water On to stop and pass to
 // Javascript below in onload() 
+// below is for the chop
 $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
+
+// see if this device has been initialised. If not bang up warning alert
+if(!deviceInitialised()) {
+	echo ("<script type='text/javascript'>alert('WARNING: System is not initialised');</script>");
+}
 
 ?>
 <body onload="setWaterOffTimerSecs(<?php echo $secsWaterTimeout ?>)">
