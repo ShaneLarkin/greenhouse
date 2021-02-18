@@ -188,19 +188,28 @@ if(!deviceInitialised()) {
 							<td>
 								<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton"
 									style="color:#ff8c00"
-									onclick="">Save
+									onclick="document.getElementById('settings').style.visibility='hidden'; 
+										<?php echo saveSettings(); ?>">Save
 								</button>
 							</td>
 							<td>
 								<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
 									style="color:#ff8c00"
-									onclick="">Cancel
+									onclick="document.getElementById('settings').style.visibility='hidden'">Cancel
 								</button>
 							</td>
 							<td>
 								<button type="submit" name="settingsResetButton" id="settingsResetButton"
-									style="color:#ff8c00"
-									onclick="">Reset
+									style="color:#ff0000"
+									onclick="if(confirm('Reset device?')){
+												console.log('Reset device confirmed');
+												/* call php function to reset device and call index.php */
+												<?php echo resetDevice();  ?>
+											} 
+											else {
+											/* do nothing */ 
+											};"
+									>Reset
 								</button>
 							</td>
 						</tr>

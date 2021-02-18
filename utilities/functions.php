@@ -48,9 +48,9 @@ function extractRemainderAfterMatch($string,$match) {
 	return $remainder;
 }
 
-function openDatabase($dbName) {
+function openDatabase($dbName,$flags) {
 	try {
-			$dbh = new SQLite3($dbName);
+			$dbh = new SQLite3($dbName,$flags);
 	} catch (Exception $e) {
 		echo 'Caught exception" ' . $e->getMessage();
 		echo(" in openDatabase()");
@@ -83,7 +83,7 @@ function processResultset($resultSet) {
 
 function deviceInitialised() {
 	// conect to database
-	$db =  openDatabase("databases/greenhouse.db");
+	$db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READONLY);
 	// check if initialised
 	$query = "SELECT * from setupStatus";
 	$results = executeDbCommand($db,$query);
@@ -96,4 +96,28 @@ function deviceInitialised() {
 	}
 	return true;
 }
+
+function resetDevice() {
+    // conect to database
+    $db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READWRITE);
+    // set setupStatus.value to 0 (uninitialised)
+	$query = "update setupStatus set value = 0 where name = 'initialised'";
+    $results = executeDbCommand($db,$query);
+    closeDatabase($db);
+	// get rid of the session and present the login page
+    session_destroy();
+	// now use Javascript to re-direct page as php can't at this 
+	// NOTE: we are already inside <script> tags in the calling page 
+	echo("window.location = 'https://shanelarkin.hopto.org';");
+}
+
+function saveSettings() {
+    // conect to database
+    $db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READWRITE);
+    // set setupStatus.value to 1 (initialised)
+    $query = "update setupStatus set value = 1 where name = 'initialised'";
+    $results = executeDbCommand($db,$query);
+    closeDatabase($db);
+}
+
 ?>

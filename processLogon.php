@@ -13,7 +13,7 @@ session_start();
 	}
 
 // get stored password from database and compare 
-$db =  openDatabase("databases/greenhouse.db");
+$db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READONLY);
 $query = "SELECT password from Users where user = '$name'";
 $results = executeDbCommand($db,$query);
 $row = $results->fetchArray();
