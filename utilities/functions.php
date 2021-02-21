@@ -57,7 +57,6 @@ function openDatabase($dbName,$flags) {
 		exit();
 	} 
 
-
 	return $dbh;
 }
 
@@ -73,12 +72,7 @@ function executeDbCommand($dbh, $query) {
 		echo(" in executeDbCommand()");
 		exit();
 	}
-
 	return $resultSet;
-}
-
-function processResultset($resultSet) {
-	//return 1;
 }
 
 function deviceInitialised() {
@@ -91,33 +85,39 @@ function deviceInitialised() {
 	// close database
 	closeDatabase($db);
 	// return result
-	if($row[1] == '0') {
-		return false;
+	if($row[1] == 'yes') {
+		return true;
 	}
-	return true;
+	return false;
 }
 
-function resetDevice() {
-    // conect to database
+function setParentState($action) {
+
     $db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READWRITE);
-    // set setupStatus.value to 0 (uninitialised)
-	$query = "update setupStatus set value = 0 where name = 'initialised'";
-    $results = executeDbCommand($db,$query);
-    closeDatabase($db);
-	// get rid of the session and present the login page
-    session_destroy();
-	// now use Javascript to re-direct page as php can't at this 
-	// NOTE: we are already inside <script> tags in the calling page 
-	echo("window.location = 'https://shanelarkin.hopto.org';");
-}
 
-function saveSettings() {
-    // conect to database
-    $db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READWRITE);
-    // set setupStatus.value to 1 (initialised)
-    $query = "update setupStatus set value = 1 where name = 'initialised'";
-    $results = executeDbCommand($db,$query);
-    closeDatabase($db);
-}
+	$statement = ""; 
 
+	switch ($action) {
+		case "SET":		//$statement->bindParam(':initState','yes',SQLITE3_TEXT); 
+						$statement = "update setupStatus set state = 'yes', timestamp = datetime('now','localtime') where name = 'initialised'";
+						break;
+		case "RESET":	//$statement->bindParam(':initState','no',SQLITE3_TEXT);
+						$statement = "update setupStatus set state = 'no', timestamp = datetime('now','localtime') where name = 'initialised'";
+						break;
+		default:		echo("Invalid case in setParentState");
+						exit(1);
+	}
+
+	
+	//$result = $statement->execute();
+
+	//$changes = $db->changes();
+	//echo("alert($changes)");
+
+    executeDbCommand($db,$statement);
+
+    closeDatabase($db);
+	echo("alert($action)");
+
+}
 ?>

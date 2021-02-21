@@ -33,8 +33,8 @@ if(password_verify($password,$row[0])) {
 }
 else {
 	// below just during dev to stop constant logging
-	//session_destroy();
-	//header("Location: index.php");
-	header("Location: mainMenu.php");
+	session_destroy();
+	header("Location: index.php");
+	//header("Location: mainMenu.php");
 }
 ?>

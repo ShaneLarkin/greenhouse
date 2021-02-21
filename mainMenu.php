@@ -21,6 +21,9 @@ session_start();
 	<script type="text/javascript" src="jscript/jquery.js" ></script>
 	<script type="text/javascript" src="jscript/actions.js?t=<?php echo time(); ?>"></script>
 	<script type="text/javascript" src="jscript/main.js?t=<?php echo time(); ?>">" ></script>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
 </head>
 
 <!-- Any global Javascript values that are taken from config/config.ini -->
@@ -33,13 +36,13 @@ session_start();
 $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 
 // see if this device has been initialised. If not bang up warning alert
-if(!deviceInitialised()) {
-	echo ("<script type='text/javascript'>alert('WARNING: System is not initialised');</script>");
-}
+//if(!deviceInitialised()) {
+//	echo ("<script type='text/javascript'>alert('WARNING: System is not initialised');</script>");
+//}
 
 ?>
 <body onload="setWaterOffTimerSecs(<?php echo $secsWaterTimeout ?>)">
-	<table>
+	<table border>
 		<tr>
 			<td>
 				<div class = "header">
@@ -48,19 +51,20 @@ if(!deviceInitialised()) {
 							<td><h1>Main Menu</h1></td>
 						</tr>
 						<tr>
-							<?php echo "<td>Welcome back<h2>" . $_SESSION["user"] . "</h2>"; ?>
+							<?php echo "<td>Welcome back<h2>" . $_SESSION["user"] . "</h2></td>"; ?>
 						</tr>
 						<tr>
 							<td>
 								<button type="button" style="color:#ff8c00" id = "logoutButton" name="logoutButton" 
 								onclick="turnWaterOff(); window.location.replace('https://shanelarkin.hopto.org'); "<?php unsetUser(); ?> 
-									>Log Off</button>
+									>Log Off
+								</button>
 							</td>
 						</tr>
 					</table>
 				</div>
 				<div class = "startHidden" name = "temperatureDisplay" id="temperatureDisplay">
-					<table>
+					<table border>
 						<tr>
 							<td><textarea rows="2" cols="4" readonly placeholder="" 
 								id = "tempArea" name = "tempArea"></textarea>
@@ -76,16 +80,16 @@ if(!deviceInitialised()) {
 		<tr>
 			<td>
 				<div class="middle">
-					<table>
+					<table border>
 						<tr>
 							<td>
 								<form name="pingControlForm" id="pingControlForm" method="POST">
 									<button type="submit" name="pingButton" 
-										id="pingButton">Ping Device</button>
+										id="pingButton">Ping Device
+									</button>
 								</form>
 							</td>
 							<td>
-								</form>
 								<form name="waterOnControlForm" id="waterOnControlForm" method="POST">
 									<button type="submit" name="waterOnButton"
 										onclick="waterOffTimerHandle = setTimeout(turnWaterOff,waterOffTimerValSecs); 
@@ -113,7 +117,7 @@ if(!deviceInitialised()) {
 		<tr>
 			<td>
 				<div class="footer">
-					<table>
+					<table border>
 						<tr>
 							<td><b>status</b></td>
 						</tr>
@@ -138,7 +142,7 @@ if(!deviceInitialised()) {
 		<tr>
 			<td class="topPadded">
 				<div class="startHidden" name="settings" id="settings">
-					<table>
+					<table border>
 						<tr>
 							<td>
 							<!-- table for setting displays and savings  -->
@@ -182,38 +186,40 @@ if(!deviceInitialised()) {
 										<td>Moisture Threshold</td>
 										<td>Moisture Check Mins</td>
 									</tr>
+									<!-- save, cancel and reset for settings  -->
+									<tr>
+										<td>
+											<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton" 
+												style="color:#ff8c00"
+												onclick="document.getElementById('settings').style.visibility='hidden'; 
+													<?php echo setParentState('SET');  ?>"
+												>Save 
+											</button>
+										</td>
+										<td>
+											<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
+												style="color:#ff8c00"
+												onclick="document.getElementById('settings').style.visibility='hidden'">Cancel
+											</button>
+										</td>
+										<td>
+											<button type="submit" name="settingsResetButton" id="settingsResetButton"
+												style="color:#ff0000"
+												onclick="if(confirm('Reset device?')){
+															console.log('Reset device confirmed');
+															/* call php function to reset device and call index.php */
+															<?php /* echo setParentState('RESET'); */  ?>
+															} 
+															else {
+															/* do nothing */ 
+															};"
+													>Reset
+											</button>
+										</td>
+									</tr>
+								</table>
+							</td>
 						</tr>
-						<!-- save, cancel and reset for settings  -->
-						<tr>
-							<td>
-								<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton"
-									style="color:#ff8c00"
-									onclick="document.getElementById('settings').style.visibility='hidden'; 
-										<?php echo saveSettings(); ?>">Save
-								</button>
-							</td>
-							<td>
-								<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
-									style="color:#ff8c00"
-									onclick="document.getElementById('settings').style.visibility='hidden'">Cancel
-								</button>
-							</td>
-							<td>
-								<button type="submit" name="settingsResetButton" id="settingsResetButton"
-									style="color:#ff0000"
-									onclick="if(confirm('Reset device?')){
-												console.log('Reset device confirmed');
-												/* call php function to reset device and call index.php */
-												<?php echo resetDevice();  ?>
-											} 
-											else {
-											/* do nothing */ 
-											};"
-									>Reset
-								</button>
-							</td>
-						</tr>
-						</table>
 					</table>
 				</div>
 			</td>
