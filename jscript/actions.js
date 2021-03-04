@@ -124,6 +124,68 @@ console.log(jsonData);
            }
        });
      });
+	// Set device to initialised and store values set on sliders
+    $('#setParentControlForm').submit(function(e) {
+		// clear status area
+		document.getElementById("statusArea").value = "";
+console.log('setParentDevice submitted');
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '../utilities/actions.php',
+            data: {"setParentDevice" : "1"},
+
+            success: function(response)
+            {
+                var jsonData = JSON.parse(response);
+
+                if (jsonData.success == "1")
+                {
+					//document.getElementById("statusArea").value = jsonData.output;
+					document.getElementById("statusArea").value = "Parent Device Set";
+                }
+                else
+                {
+					//document.getElementById("statusArea").value = jsonData.output;
+                    //alert(jsonData.output);
+					document.getElementById("statusArea").value = "Failed to Reset Parent Device";
+                    alert('Failed to Set Parent Device');
+                }
+           }
+       });
+     });
+	// Reset device to unitinialised
+    $('#resetParentControlForm').submit(function(e) {
+		// clear status area
+		document.getElementById("statusArea").value = "";
+console.log('resetParentDevice submitted');
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '../utilities/actions.php',
+            data: {"resetParentDevice" : "1"},
+
+            success: function(response)
+            {
+                var jsonData = JSON.parse(response);
+
+                if (jsonData.success == "1")
+                {
+					//document.getElementById("statusArea").value = jsonData.output;
+					document.getElementById("statusArea").value = "Device Reset";
+                }
+                else
+                {
+					//document.getElementById("statusArea").value = jsonData.output;
+                    //alert(jsonData.output);
+					document.getElementById("statusArea").value = "Failed to Reset device"; 
+                    alert('Failed to Reset Parent Device');
+                }
+           }
+       });
+     });
+
+
 
 // end of document.ready
 });

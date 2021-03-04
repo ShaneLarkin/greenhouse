@@ -3,6 +3,10 @@
 require_once("utilities/functions.php");
 require_once("utilities/constants.php");
 session_start();
+//
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
 // If no valid logon, go to index page
 // comment out during dev to stop constant logons
@@ -36,13 +40,13 @@ session_start();
 $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 
 // see if this device has been initialised. If not bang up warning alert
-//if(!deviceInitialised()) {
-//	echo ("<script type='text/javascript'>alert('WARNING: System is not initialised');</script>");
-//}
+if(!deviceInitialised()) {
+	echo ("<script type='text/javascript'>alert('WARNING: System is not initialised');</script>");
+}
 
 ?>
 <body onload="setWaterOffTimerSecs(<?php echo $secsWaterTimeout ?>)">
-	<table border>
+	<table>
 		<tr>
 			<td>
 				<div class = "header">
@@ -64,7 +68,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 					</table>
 				</div>
 				<div class = "startHidden" name = "temperatureDisplay" id="temperatureDisplay">
-					<table border>
+					<table>
 						<tr>
 							<td><textarea rows="2" cols="4" readonly placeholder="" 
 								id = "tempArea" name = "tempArea"></textarea>
@@ -80,7 +84,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 		<tr>
 			<td>
 				<div class="middle">
-					<table border>
+					<table>
 						<tr>
 							<td>
 								<form name="pingControlForm" id="pingControlForm" method="POST">
@@ -117,7 +121,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 		<tr>
 			<td>
 				<div class="footer">
-					<table border>
+					<table>
 						<tr>
 							<td><b>status</b></td>
 						</tr>
@@ -142,7 +146,7 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 		<tr>
 			<td class="topPadded">
 				<div class="startHidden" name="settings" id="settings">
-					<table border>
+					<table> 
 						<tr>
 							<td>
 							<!-- table for setting displays and savings  -->
@@ -189,12 +193,14 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 									<!-- save, cancel and reset for settings  -->
 									<tr>
 										<td>
-											<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton" 
-												style="color:#ff8c00"
-												onclick="document.getElementById('settings').style.visibility='hidden'; 
-													<?php echo setParentState('SET');  ?>"
-												>Save 
-											</button>
+											<form name="setParentControlForm" id="setParentControlForm" method="POST">
+												<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton" 
+													style="color:#ff8c00"
+													onclick="document.getElementById('settings').style.visibility='hidden';
+														document.getElementById('setParentControlForm').submit();" 
+													>Save 
+												</button>
+											</form>
 										</td>
 										<td>
 											<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
@@ -203,18 +209,19 @@ $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
 											</button>
 										</td>
 										<td>
-											<button type="submit" name="settingsResetButton" id="settingsResetButton"
-												style="color:#ff0000"
-												onclick="if(confirm('Reset device?')){
-															console.log('Reset device confirmed');
-															/* call php function to reset device and call index.php */
-															<?php /* echo setParentState('RESET'); */  ?>
+											<form name="resetParentControlForm" id="resetParentControlForm" method="POST">
+												<button type="submit" name="settingsResetButton" id="settingsResetButton"
+													style="color:#ff0000"
+													onclick="if(confirm('Reset device?')){
+																console.log('Reset device confirmed');
+																document.getElementById('resetParentControlForm').submit(); 
 															} 
 															else {
-															/* do nothing */ 
-															};"
+																/* do nothing */ 
+															};";
 													>Reset
-											</button>
+												</button>
+											</form>
 										</td>
 									</tr>
 								</table>

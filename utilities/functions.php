@@ -31,12 +31,12 @@ function unsetUser() {
 } 
 
 // write to Javascipt console from php
-function consoleLog($output, $with_script_tags = true) {
-    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .  ');';
-    if ($with_script_tags) {
-        $js_code = '<script>' . $js_code . '</script>';
-    }
-    echo $js_code;
+function consoleLog($output, $addTags = true) {
+	$jsCode = 'console.log(\'' . $output . '\' );';
+    if ($addTags) {
+        $jsCode = '<script>' . $jsCode . '</script>';
+	}
+    echo $jsCode;
 }
 
  // Return remainder of a string after matching a word
@@ -48,44 +48,47 @@ function extractRemainderAfterMatch($string,$match) {
 	return $remainder;
 }
 
-function openDatabase($dbName,$flags) {
-	try {
-			$dbh = new SQLite3($dbName,$flags);
-	} catch (Exception $e) {
-		echo 'Caught exception" ' . $e->getMessage();
-		echo(" in openDatabase()");
-		exit();
-	} 
+function openDatabase($dbName) {
+    try {
+        $dbh = new PDO('sqlite:databases/greenhouse.db');
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }   
+    catch(PDOException $e) {
+        consoleLog("Could not open database");
+        exit(1);
+    }
 
 	return $dbh;
 }
 
 function closeDatabase($dbh) {
-	$dbh->close();
+	$dbh = NULL;;
 }
 
-function executeDbCommand($dbh, $query) {
-	try {
-		$resultSet = $dbh->query($query);
-	} catch (Exception $e) {
-		echo 'Caught exception" ' . $e->getMessage();
-		echo(" in executeDbCommand()");
-		exit();
+function executeDbCommand($dbh, $query,$returnStuff) {
+	$resultSet = NULL;
+	$sth = $dbh->prepare($query);
+//$dbh->beginTransaction();
+	$sth->execute();
+	if($returnStuff == true) {
+		$resultSet = $sth->fetchAll();
 	}
+//$dbh->commit();
+	
 	return $resultSet;
 }
 
 function deviceInitialised() {
 	// conect to database
-	$db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READONLY);
+	$db =  openDatabase("databases/greenhouse.db");
 	// check if initialised
 	$query = "SELECT * from setupStatus";
-	$results = executeDbCommand($db,$query);
-	$row = $results->fetchArray();
+
+	$results = executeDbCommand($db,$query,true);
 	// close database
 	closeDatabase($db);
-	// return result
-	if($row[1] == 'yes') {
+	// [0][1] is 'yes' if initialised
+	if($results[0][1] == 'yes') {
 		return true;
 	}
 	return false;
@@ -93,31 +96,32 @@ function deviceInitialised() {
 
 function setParentState($action) {
 
-    $db =  openDatabase("databases/greenhouse.db",SQLITE3_OPEN_READWRITE);
+	$action = strtoupper($action);
 
-	$statement = ""; 
+consoleLog('In setParentState',false);
+	$db =  openDatabase("databases/greenhouse.db");
+
 
 	switch ($action) {
-		case "SET":		//$statement->bindParam(':initState','yes',SQLITE3_TEXT); 
-						$statement = "update setupStatus set state = 'yes', timestamp = datetime('now','localtime') where name = 'initialised'";
+		case "SET" :	$desiredState = 'yes';
 						break;
-		case "RESET":	//$statement->bindParam(':initState','no',SQLITE3_TEXT);
-						$statement = "update setupStatus set state = 'no', timestamp = datetime('now','localtime') where name = 'initialised'";
+
+		case "RESET" :	$desiredState = 'no';
 						break;
+
 		default:		echo("Invalid case in setParentState");
 						exit(1);
 	}
 
-	
-	//$result = $statement->execute();
+consoleLog('action = ' . $action,false);
 
-	//$changes = $db->changes();
-	//echo("alert($changes)");
+	$statement = "update setupStatus set state = '$desiredState', timestamp = datetime('now','localtime') where stage = 'initialised'";
+//$db->beginTransaction();
+	$results = executeDbCommand($db,$statement,true);
+//$db->commit();
 
-    executeDbCommand($db,$statement);
-
-    closeDatabase($db);
-	echo("alert($action)");
+	//closeDatabase($db);
+consoleLog('got to end of setParentState with db ploop',false);
 
 }
 ?>

@@ -19,8 +19,8 @@ if(isset($_POST['pingDevice'])) {
 	echo pingDevice();
 }
 
-// for maybe mistaken safety reasons, water  on and off are seperte functions 
-// when they may have been one wit a flag. Maybe that will be true later.
+// for maybe mistaken safety reasons, water  on and off are seperate functions 
+// when they may have been one with a flag. Maybe that will be true later.
 if(isset($_POST['waterOn'])) {
 	echo waterOn();
 }
@@ -33,7 +33,15 @@ if(isset($_POST['readTemperature'])) {
 	echo readTemperature();
 }
 
-/* second section - the actual device functions */
+/* still first section but "parent device" centered i.e. things that happen to the Pi */
+
+if(isset($_POST['setParentDevice'])) {
+	echo setParentDevice();
+
+if(isset($_POST['resetParentDevice'])) {
+	echo resetParentDevice();
+
+/* -------- second section - the actual device functions ------- */
 
 // check if device is alive 
 function pingDevice() {
@@ -94,5 +102,17 @@ function readTemperature() {
 	// failed
     return json_encode(array('output' => 'Temp Read failed','success' => 0));
 }
+
+function setParentDevice() {
+	//setParentState("SET");
+    return json_encode(array('output' => 'Set Parent Device','success' => 1));
+}
+
+function resetParentDevice() {
+	//setParentState("RESET");
+    return json_encode(array('output' => 'Reset Parent Device','success' => 1));
+
+}
+
 
 ?>
