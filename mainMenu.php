@@ -4,15 +4,15 @@ require_once("utilities/functions.php");
 require_once("utilities/constants.php");
 session_start();
 //
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+//header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+//header("Cache-Control: post-check=0, pre-check=0", false);
+//header("Pragma: no-cache");
 
 // If no valid logon, go to index page
 // comment out during dev to stop constant logons
-//if(!checkValidLogon()) {
-//	header("Location: index.php");
-//}
+if(!checkValidLogon()) {
+	header("Location: index.php");
+}
 
 ?>
 
@@ -174,13 +174,13 @@ if(!deviceInitialised()) {
 										</td>
 										<td>
 											<div class="slidecontainer">
-  												<input type="range" min="1" max="100" value="50" 
+  												<input type="range" min="1" max="100" value="50"
 													class="slider" id="moistureThresholdSlide" onchange="showValueInSlider(this.value,'moistureThresholdOP')">
 											</div>
 										</td>
 										<td>
 											<div class="slidecontainer">
-  												<input type="range" min="1" max="100" value="50" 
+  												<input type="range" min="1" max="100" value="50"
 													class="slider" id="moistureCheckMinsSlide" onchange="showValueInSlider(this.value,'moistureCheckMinsOP')">
 											</div>
 										</td>
@@ -194,30 +194,29 @@ if(!deviceInitialised()) {
 									<tr>
 										<td>
 											<form name="setParentControlForm" id="setParentControlForm" method="POST">
-												<button type="submit" name="settingsSubmitButton" id="settingsSubmitButton" 
+												<button type="button" name="settingsSubmitButton" id="settingsSubmitButton" 
 													style="color:#ff8c00"
 													onclick="document.getElementById('settings').style.visibility='hidden';
-														document.getElementById('setParentControlForm').submit();" 
+														$('#setParentControlForm').submit();" 
 													>Save 
 												</button>
 											</form>
 										</td>
 										<td>
-											<button type="submit" name="settingsCancelButton" id="settingsCancelButton"
+											<button type="button" name="settingsCancelButton" id="settingsCancelButton"
 												style="color:#ff8c00"
 												onclick="document.getElementById('settings').style.visibility='hidden'">Cancel
 											</button>
 										</td>
 										<td>
 											<form name="resetParentControlForm" id="resetParentControlForm" method="POST">
-												<button type="submit" name="settingsResetButton" id="settingsResetButton"
+												<button type="button" name="settingsResetButton" id="settingsResetButton"
 													style="color:#ff0000"
 													onclick="if(confirm('Reset device?')){
 																console.log('Reset device confirmed');
-																document.getElementById('resetParentControlForm').submit(); 
+																$('#resetParentControlForm').submit(); 
 															} 
 															else {
-																/* do nothing */ 
 															};";
 													>Reset
 												</button>

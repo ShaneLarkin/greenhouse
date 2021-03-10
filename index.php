@@ -41,7 +41,7 @@
 										autocomplete="off"></td>
 									</tr>
 									<tr>
-										<td><button type = "submit" onclick="document.getElementById('loginForm').submit();">Submit</button></td> 
+										<td><button type = "button" onclick="document.getElementById('loginForm').submit();">Submit</button></td> 
 										<td><button type = "button" style="float:right" onclick="clearLogonPage();" >Clear</button></td>
 									</tr>
 								</form>

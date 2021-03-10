@@ -11,18 +11,19 @@ function  checkValidLogon() {
 // create (if required) and write to a PHP debug file
 // location is path and file name - use a constant
 function writeToDebug($message, $location) {
-	$debugFile = "";
+	$dbfh;
+$location = "/var/www/html/debug/debug.txt"; 
 	// create timestamp
 	$dateTime = date('d/m/y h:i:s');
 
 	if(!file_exists($location)) {
-		$debugFile = fopen($location, "w");
+		$dbfh = fopen($location, "w");
 	} else {
-		$debugFile = fopen($location, "a");
+		$dbfh = fopen($location, "a");
 	}
-	fwrite($debugFile, $dateTime . " - " . print_r($message, true) . "\n");
+	fwrite($dbfh, $dateTime . " - " . print_r($message, true) . "\n");
 
-	fclose($debugFile);
+	fclose($dbfh);
 }
 
 // remove user variable from session 
@@ -48,13 +49,15 @@ function extractRemainderAfterMatch($string,$match) {
 	return $remainder;
 }
 
+// shane - needs to work with relative paths
 function openDatabase($dbName) {
     try {
-        $dbh = new PDO('sqlite:databases/greenhouse.db');
+        $dbh = new PDO("sqlite:".$dbName);
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }   
     catch(PDOException $e) {
-        consoleLog("Could not open database");
+        consoleLog("Could not open database",false);
+// shane - needs something here that stops everything - exit(1) doesn't
         exit(1);
     }
 
@@ -68,19 +71,17 @@ function closeDatabase($dbh) {
 function executeDbCommand($dbh, $query,$returnStuff) {
 	$resultSet = NULL;
 	$sth = $dbh->prepare($query);
-//$dbh->beginTransaction();
 	$sth->execute();
 	if($returnStuff == true) {
 		$resultSet = $sth->fetchAll();
 	}
-//$dbh->commit();
 	
 	return $resultSet;
 }
 
 function deviceInitialised() {
 	// conect to database
-	$db =  openDatabase("databases/greenhouse.db");
+	$db =  openDatabase("/var/www/html/databases/greenhouse.db");
 	// check if initialised
 	$query = "SELECT * from setupStatus";
 
@@ -98,9 +99,7 @@ function setParentState($action) {
 
 	$action = strtoupper($action);
 
-consoleLog('In setParentState',false);
-	$db =  openDatabase("databases/greenhouse.db");
-
+	$db =  openDatabase("/var/www/html/databases/greenhouse.db");
 
 	switch ($action) {
 		case "SET" :	$desiredState = 'yes';
@@ -109,19 +108,12 @@ consoleLog('In setParentState',false);
 		case "RESET" :	$desiredState = 'no';
 						break;
 
-		default:		echo("Invalid case in setParentState");
-						exit(1);
 	}
 
-consoleLog('action = ' . $action,false);
-
 	$statement = "update setupStatus set state = '$desiredState', timestamp = datetime('now','localtime') where stage = 'initialised'";
-//$db->beginTransaction();
-	$results = executeDbCommand($db,$statement,true);
-//$db->commit();
+	$results = executeDbCommand($db,$statement,false);
 
-	//closeDatabase($db);
-consoleLog('got to end of setParentState with db ploop',false);
-
+	closeDatabase($db);
 }
+
 ?>

@@ -12,34 +12,48 @@ session_start();
 require_once("functions.php");
 require_once("constants.php");
 
+// print what's in the post
+foreach($_POST as $key => $value){ 
+	writeToDebug($key,DEBUG_FILE);
+}
+
+
 /* first section of code decides which functions to call
  and calls them */
 
 if(isset($_POST['pingDevice'])) {
+writeToDebug("pingDevice in Debug",DEBUG_FILE);
 	echo pingDevice();
 }
 
 // for maybe mistaken safety reasons, water  on and off are seperate functions 
 // when they may have been one with a flag. Maybe that will be true later.
 if(isset($_POST['waterOn'])) {
+writeToDebug("Water On in Debug",DEBUG_FILE);
 	echo waterOn();
 }
 
 if(isset($_POST['waterOff'])) {
+writeToDebug("Water Off in Debug",DEBUG_FILE);
 	echo waterOff();
 }
 
 if(isset($_POST['readTemperature'])) {
+writeToDebug("read temepature in Debug",DEBUG_FILE);
 	echo readTemperature();
 }
 
 /* still first section but "parent device" centered i.e. things that happen to the Pi */
 
 if(isset($_POST['setParentDevice'])) {
+writeToDebug("setParentDevice in Debug",DEBUG_FILE);
 	echo setParentDevice();
+}
 
 if(isset($_POST['resetParentDevice'])) {
+writeToDebug("restParentDevice in Debug",DEBUG_FILE);
 	echo resetParentDevice();
+}
 
 /* -------- second section - the actual device functions ------- */
 
@@ -92,6 +106,7 @@ function readTemperature() {
 	$action = "/READ_TEMPERATURE";
 	$command = $prefix . $ip . ":" . $port . $action;
 	$res = exec("sudo -u www-data /usr/bin/curl $command 2>&1",$output,$status);
+// this works
 //writeToDebug("Testing debug",DEBUG_FILE);
 	// worked
 	if($status == 0) {
@@ -104,15 +119,14 @@ function readTemperature() {
 }
 
 function setParentDevice() {
-	//setParentState("SET");
+//writeToDebug("setParentDeviceCalled()",DEBUG_FILE);
+	setParentState("SET");
     return json_encode(array('output' => 'Set Parent Device','success' => 1));
 }
 
 function resetParentDevice() {
-	//setParentState("RESET");
+//writeToDebug("resetParentDeviceCalled()",DEBUG_FILE);
+	setParentState("RESET");
     return json_encode(array('output' => 'Reset Parent Device','success' => 1));
-
 }
-
-
 ?>
