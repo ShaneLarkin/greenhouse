@@ -1,0 +1,7 @@
+To update to local instance of Git
+To add all changed files:
+git commit -a -m  "Finally got database working"
+
+To push up to GitHub
+git push 
+ShaneLarkin

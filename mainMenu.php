@@ -38,6 +38,9 @@ if(!checkValidLogon()) {
 // Javascript below in onload() 
 // below is for the chop
 $secsWaterTimeout = $_SESSION["defaultSecsForWaterToRun"] * 1000;
+// the value to set the sliders if the device is not initialised
+$defaultSliderValue = $_SESSION["defaultSliderValue"];
+consoleLog($defaultSliderValue,true); 
 
 // see if this device has been initialised. If not bang up warning alert
 if(!deviceInitialised()) {
@@ -154,15 +157,23 @@ if(!deviceInitialised()) {
 									<tr>
 										<td> <!-- Displays for sliders  -->
 											<textarea rows="3" cols="3" readonly
-                                 				id = "waterOnMinsOP"></textarea>
+                                 				id = "waterOnMinsOP">
+											</textarea>
+											<?php
+												if(!deviceInitialised()) {
+													// do this more cleverly
+												}
+											?>
 										</td>
 										<td>
 											<textarea rows="3" cols="3" readonly
-                                 				id = "moistureThresholdOP" ></textarea>
+                                 				id = "moistureThresholdOP" >
+											</textarea>
 										</td>
 										<td>
 											<textarea rows="3" cols="3" readonly
-                                 				id = "moistureCheckMinsOP" ></textarea>
+                                 				id = "moistureCheckMinsOP" >
+											</textarea>
 										</td>
 									</tr>
 									<tr>

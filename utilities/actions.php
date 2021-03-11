@@ -120,13 +120,13 @@ function readTemperature() {
 
 function setParentDevice() {
 //writeToDebug("setParentDeviceCalled()",DEBUG_FILE);
-	setParentState("SET");
+	setParentState('SET','Shed2',120,60,30,50,30);
     return json_encode(array('output' => 'Set Parent Device','success' => 1));
 }
 
 function resetParentDevice() {
 //writeToDebug("resetParentDeviceCalled()",DEBUG_FILE);
-	setParentState("RESET");
+	setParentState('RESET','Shed2',0,0,0,0,0);
     return json_encode(array('output' => 'Reset Parent Device','success' => 1));
 }
 ?>

@@ -20,8 +20,8 @@ closeDatabase($db);
 
 // user and password accepted so set user name on session
 // then parse the config file and add the values to the sessiona
-
-if(password_verify($password,$results[0][0])) {
+$checker = $results[0][0];
+if(password_verify($password,$checker)) {
 	$_SESSION["user"] = $name;
 	// read config.ini and set values in session
 	$configArray = parse_ini_file("config/config.ini");

@@ -70,10 +70,18 @@ function closeDatabase($dbh) {
 
 function executeDbCommand($dbh, $query,$returnStuff) {
 	$resultSet = NULL;
-	$sth = $dbh->prepare($query);
-	$sth->execute();
-	if($returnStuff == true) {
-		$resultSet = $sth->fetchAll();
+	try {
+		$sth = $dbh->prepare($query);
+		$sth->execute();
+
+		if($returnStuff == true) {
+			$resultSet = $sth->fetchAll();
+		}
+	}
+	catch(PDOExceoption $e) {
+		//$e->getMessage();
+        consoleLog("Execute Command failed",false);
+
 	}
 	
 	return $resultSet;
@@ -95,7 +103,9 @@ function deviceInitialised() {
 	return false;
 }
 
-function setParentState($action) {
+function setParentState($action, $deviceName,$defaultSecsForWaterToRun,$temperatureReadRefreshSecs,
+						$moistureCheckIntervalMins,$drySoilWateringThreshold,
+						$heightTriggerCms) {
 
 	$action = strtoupper($action);
 
@@ -109,10 +119,20 @@ function setParentState($action) {
 						break;
 
 	}
-
+	// set Parent device status
 	$statement = "update setupStatus set state = '$desiredState', timestamp = datetime('now','localtime') where stage = 'initialised'";
 	$results = executeDbCommand($db,$statement,false);
 
+	// set values for timmed actions
+	$statement = "update deviceValues set defaultSecsForWaterToRun = $defaultSecsForWaterToRun,
+										temperatureReadRefreshSecs = $temperatureReadRefreshSecs,
+										moistureCheckIntervalMins = $moistureCheckIntervalMins,
+										drySoilWateringThreshold = $drySoilWateringThreshold,
+										heightTriggerCms = $heightTriggerCms
+				where deviceName = '$deviceName'";
+
+	$results = executeDbCommand($db,$statement,false);
+	
 	closeDatabase($db);
 }
 
