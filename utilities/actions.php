@@ -55,6 +55,13 @@ writeToDebug("restParentDevice in Debug",DEBUG_FILE);
 	echo resetParentDevice();
 }
 
+if(isset($_POST['getDeviceSettings'])) {
+writeToDebug("getDeviceSettings in Debug",DEBUG_FILE);
+	echo getDeviceSettings();
+}
+
+
+
 /* -------- second section - the actual device functions ------- */
 
 // check if device is alive 
@@ -128,5 +135,13 @@ function resetParentDevice() {
 //writeToDebug("resetParentDeviceCalled()",DEBUG_FILE);
 	setParentState('RESET','Shed2',0,0,0,0,0);
     return json_encode(array('output' => 'Reset Parent Device','success' => 1));
+}
+
+// return the current device settings 
+function getDeviceSettings() {
+	$currentValues = readDeviceSettings();
+
+    return json_encode(array('output' => 'Get Device Settings','success' => 1));
+	
 }
 ?>

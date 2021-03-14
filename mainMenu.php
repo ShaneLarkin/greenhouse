@@ -133,13 +133,16 @@ if(!deviceInitialised()) {
 								id = "statusArea" name = "statusArea"></textarea>
 							</td>
 						</tr>
-						<!--Let's try a "settings" button -->
+						<!-- settings button -->
 						<tr>
 							<td class="topPadded">
-								<button type="submit" name="temperatureButton" id="temperatureButton"
-									style="color:#ff8c00"
-									onclick="document.getElementById('settings').style.visibility='visible'">
-									Settings</button>
+								<form name="showSettingsControlForm" id="showSettingsControlForm" method="POST">
+									<button type="submit" name="temperatureButton" id="temperatureButton"
+										style="color:#ff8c00"
+										onclick="document.getElementById('settings').style.visibility='visible';
+												$('#setParentControlForm').submit();"> 
+										Settings</button>
+								</form>
 							</td>
 						</tr>
 					</table>

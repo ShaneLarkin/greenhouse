@@ -136,4 +136,18 @@ function setParentState($action, $deviceName,$defaultSecsForWaterToRun,$temperat
 	closeDatabase($db);
 }
 
+function readDeviceSettings($deviceName) {
+	// no struct or typedef! Are you kidding?
+	$currentDeviceValues = array(
+						"defaultSecsForWaterToRun" => 0,
+						"temperatureReadRefreshSecs" => 0,
+						"moistureCheckIntervalMins" => 0,
+						"drySoilWaterThreshold" => 0,
+						"heightTriggerCms" => 0
+						);
+
+	return $currentDeviceValues;
+}
+
+
 ?>

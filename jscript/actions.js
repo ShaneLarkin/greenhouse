@@ -112,13 +112,14 @@ console.log('Read Temperature submitted');
 						document.getElementById("statusArea").value = "Centigrade data error";
 					}
 					else {
-						document.getElementById("statusArea").value = jsonData.temperature;
+						document.getElementById("tempArea").value = jsonData.temperature;
+						document.getElementById("statusArea").value = "Temp read running";
 					}
                 }
                 else
                 {
 					// curl call failed
-					document.getElementById("statusArea").value = "Temp call failed";
+					document.getElementById("statusArea").value = "Temp read failed";
 					alert(jsonData.output);
                 }
            }
@@ -173,6 +174,32 @@ console.log('Read Temperature submitted');
                 {
 					document.getElementById("statusArea").value = "Failed to Reset device"; 
                     alert('Failed to Reset Parent Device');
+                }
+           }
+       });
+     });
+
+	// show the stored values for the Device Settings stored in the database
+    $('#showSettingsControlForm').submit(function(e) {
+		// clear status area
+		document.getElementById("statusArea").value = "";
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: '../utilities/actions.php',
+            data: {"getDeviceSettings" : "1"},
+            success: function(response)
+            {
+                var jsonData = JSON.parse(response);
+
+                if (jsonData.success == "1")
+                {
+					document.getElementById("statusArea").value = "Got Device Settings";
+                }
+                else
+                {
+					document.getElementById("statusArea").value = "Failed to get Device Settings"; 
+                    alert('Failed to get Device Settings');
                 }
            }
        });
