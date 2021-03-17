@@ -88,3 +88,22 @@ function showValueInSlider(sliderVal, outputDisplayID) {
 	document.getElementById(outputDisplayID).value = sliderVal;
 	//document.getElementById("waterOnMinsOP").value = sliderVal;
 }
+
+// get slider values from json and populate
+function populateSliders($jsonData) {
+console.log($jsonData);
+document.getElementById('waterOnMinsOP').value = $jsonData.defaultSecsForWaterToRun;
+document.getElementById('waterOnMinsSlide').value = $jsonData.defaultSecsForWaterToRun;
+
+// = jsonData.temperatureReadRefreshSecs;
+
+document.getElementById('moistureCheckMinsOP').value = $jsonData.moistureCheckIntervalMins;
+document.getElementById('moistureCheckMinsSlide').value = $jsonData.moistureCheckIntervalMins;
+
+
+document.getElementById('moistureThresholdOP').value = $jsonData.drySoilWaterThreshold;
+document.getElementById('moistureThresholdSlide').value = $jsonData.drySoilWaterThreshold;
+
+// = jsonData.heightTriggerrCms;
+
+}

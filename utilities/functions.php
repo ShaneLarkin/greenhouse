@@ -53,7 +53,13 @@ function extractRemainderAfterMatch($string,$match) {
 function openDatabase($dbName) {
     try {
         $dbh = new PDO("sqlite:".$dbName);
+
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+/*
+        $dbh->setAttribute(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+							PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+						);
+*/
     }   
     catch(PDOException $e) {
         consoleLog("Could not open database",false);
@@ -75,7 +81,7 @@ function executeDbCommand($dbh, $query,$returnStuff) {
 		$sth->execute();
 
 		if($returnStuff == true) {
-			$resultSet = $sth->fetchAll();
+			$resultSet = $sth->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 	catch(PDOExceoption $e) {
@@ -136,15 +142,30 @@ function setParentState($action, $deviceName,$defaultSecsForWaterToRun,$temperat
 	closeDatabase($db);
 }
 
-function readDeviceSettings($deviceName) {
+//function readDeviceSettings($deviceName) {
+function readDeviceSettings() {
 	// no struct or typedef! Are you kidding?
 	$currentDeviceValues = array(
-						"defaultSecsForWaterToRun" => 0,
-						"temperatureReadRefreshSecs" => 0,
-						"moistureCheckIntervalMins" => 0,
-						"drySoilWaterThreshold" => 0,
-						"heightTriggerCms" => 0
+						"success" => 1,
+						"defaultSecsForWaterToRun" => 10,
+						"temperatureReadRefreshSecs" => 20,
+						"moistureCheckIntervalMins" => 30,
+						"drySoilWaterThreshold" => 40,
+						"heightTriggerCms" => 50
 						);
+
+	$db =  openDatabase("/var/www/html/databases/greenhouse.db");
+	$statement = "select * from deviceValues";
+	$results = executeDbCommand($db,$statement,false);
+/*
+foreach($currentDeviceValues as $item => $itemValue) {
+	writeToDebug($item  . ' '  . $itemValue,DEBUG_FILE);
+}
+*/
+
+writeToDebug('about to print db results',DEBUG_FILE);
+writeToDebug(print_r($results),DEBUG_FILE);
+writeToDebug('printed db results',DEBUG_FILE);
 
 	return $currentDeviceValues;
 }

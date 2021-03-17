@@ -141,7 +141,7 @@ function resetParentDevice() {
 function getDeviceSettings() {
 	$currentValues = readDeviceSettings();
 
-    return json_encode(array('output' => 'Get Device Settings','success' => 1));
+    return json_encode($currentValues);
 	
 }
 ?>

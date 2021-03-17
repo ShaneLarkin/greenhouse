@@ -194,6 +194,7 @@ console.log('Read Temperature submitted');
 
                 if (jsonData.success == "1")
                 {
+					populateSliders(jsonData);
 					document.getElementById("statusArea").value = "Got Device Settings";
                 }
                 else
