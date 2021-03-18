@@ -51,10 +51,19 @@ function extractRemainderAfterMatch($string,$match) {
 
 // shane - needs to work with relative paths
 function openDatabase($dbName) {
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
     try {
+        //$dbh = new PDO("sqlite:".$dbName,$options);
         $dbh = new PDO("sqlite:".$dbName);
 
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        //$dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_COLUMN);
 /*
         $dbh->setAttribute(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 							PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
@@ -81,7 +90,7 @@ function executeDbCommand($dbh, $query,$returnStuff) {
 		$sth->execute();
 
 		if($returnStuff == true) {
-			$resultSet = $sth->fetchAll(PDO::FETCH_ASSOC);
+			$resultSet = $sth->fetch();
 		}
 	}
 	catch(PDOExceoption $e) {
@@ -102,8 +111,15 @@ function deviceInitialised() {
 	$results = executeDbCommand($db,$query,true);
 	// close database
 	closeDatabase($db);
-	// [0][1] is 'yes' if initialised
-	if($results[0][1] == 'yes') {
+
+	//writeToDebug('stage',DEBUG_FILE);
+	//writeToDebug($results['stage'],DEBUG_FILE);
+
+	//writeToDebug('state',"thing");
+	//writeToDebug($results['state'],DEBUG_FILE);
+
+	// 'yes' if initialised
+	if($results['state'] == 'yes') {
 		return true;
 	}
 	return false;
@@ -156,16 +172,23 @@ function readDeviceSettings() {
 
 	$db =  openDatabase("/var/www/html/databases/greenhouse.db");
 	$statement = "select * from deviceValues";
-	$results = executeDbCommand($db,$statement,false);
-/*
+	$results = executeDbCommand($db,$statement,true);
+	closeDatabase($db);
+
+writeToDebug('about to print results',DEBUG_FILE);
+
+writeToDebug($results['defaultSecsForWaterToRun'],DEBUG_FILE);
+writeToDebug($results['temperatureReadRefreshSecs'],DEBUG_FILE);
+writeToDebug($results['moistureCheckIntervalMins'],DEBUG_FILE);
+writeToDebug($results['drySoilWateringThreshold'],DEBUG_FILE);
+writeToDebug($results['heightTriggerCms'],DEBUG_FILE);
+
+writeToDebug('about to print device',DEBUG_FILE);
+
 foreach($currentDeviceValues as $item => $itemValue) {
 	writeToDebug($item  . ' '  . $itemValue,DEBUG_FILE);
 }
-*/
 
-writeToDebug('about to print db results',DEBUG_FILE);
-writeToDebug(print_r($results),DEBUG_FILE);
-writeToDebug('printed db results',DEBUG_FILE);
 
 	return $currentDeviceValues;
 }
