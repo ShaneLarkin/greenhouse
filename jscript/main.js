@@ -101,9 +101,20 @@ document.getElementById('moistureCheckMinsOP').value = $jsonData.moistureCheckIn
 document.getElementById('moistureCheckMinsSlide').value = $jsonData.moistureCheckIntervalMins;
 
 
-document.getElementById('moistureThresholdOP').value = $jsonData.drySoilWaterThreshold;
-document.getElementById('moistureThresholdSlide').value = $jsonData.drySoilWaterThreshold;
+document.getElementById('moistureThresholdOP').value = $jsonData.drySoilWateringThreshold;
+document.getElementById('moistureThresholdSlide').value = $jsonData.drySoilWateringThreshold;
 
 // = jsonData.heightTriggerrCms;
 
 }
+
+function readFromSliders() {
+	//collect the slider readings
+alert(document.getElementById('waterOnMinsOP').value);
+alert(document.getElementById('moistureCheckMinsOP').value);
+alert(document.getElementById('moistureThresholdOP').value);
+	// send them to the database
+
+	// tell that all is good
+}
+

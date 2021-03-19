@@ -161,34 +161,22 @@ function setParentState($action, $deviceName,$defaultSecsForWaterToRun,$temperat
 //function readDeviceSettings($deviceName) {
 function readDeviceSettings() {
 	// no struct or typedef! Are you kidding?
-	$currentDeviceValues = array(
-						"success" => 1,
-						"defaultSecsForWaterToRun" => 10,
-						"temperatureReadRefreshSecs" => 20,
-						"moistureCheckIntervalMins" => 30,
-						"drySoilWaterThreshold" => 40,
-						"heightTriggerCms" => 50
-						);
 
 	$db =  openDatabase("/var/www/html/databases/greenhouse.db");
 	$statement = "select * from deviceValues";
-	$results = executeDbCommand($db,$statement,true);
+	$currentDeviceValues = executeDbCommand($db,$statement,true);
 	closeDatabase($db);
-
+// add "Success" to associative array of results
+	$currentDeviceValues['success'] = 1;
 writeToDebug('about to print results',DEBUG_FILE);
 
-writeToDebug($results['defaultSecsForWaterToRun'],DEBUG_FILE);
-writeToDebug($results['temperatureReadRefreshSecs'],DEBUG_FILE);
-writeToDebug($results['moistureCheckIntervalMins'],DEBUG_FILE);
-writeToDebug($results['drySoilWateringThreshold'],DEBUG_FILE);
-writeToDebug($results['heightTriggerCms'],DEBUG_FILE);
+writeToDebug($currentDeviceValues['defaultSecsForWaterToRun'],DEBUG_FILE);
+writeToDebug($currentDeviceValues['temperatureReadRefreshSecs'],DEBUG_FILE);
+writeToDebug($currentDeviceValues['moistureCheckIntervalMins'],DEBUG_FILE);
+writeToDebug($currentDeviceValues['drySoilWateringThreshold'],DEBUG_FILE);
+writeToDebug($currentDeviceValues['heightTriggerCms'],DEBUG_FILE);
 
 writeToDebug('about to print device',DEBUG_FILE);
-
-foreach($currentDeviceValues as $item => $itemValue) {
-	writeToDebug($item  . ' '  . $itemValue,DEBUG_FILE);
-}
-
 
 	return $currentDeviceValues;
 }

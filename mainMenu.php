@@ -211,6 +211,7 @@ if(!deviceInitialised()) {
 												<button type="button" name="settingsSubmitButton" id="settingsSubmitButton" 
 													style="color:#ff8c00"
 													onclick="document.getElementById('settings').style.visibility='hidden';
+														readFromSliders();
 														$('#setParentControlForm').submit();" 
 													>Save 
 												</button>
