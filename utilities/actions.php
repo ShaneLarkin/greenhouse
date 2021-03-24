@@ -47,7 +47,12 @@ writeToDebug("read temepature in Debug",DEBUG_FILE);
 
 if(isset($_POST['setParentDevice'])) {
 writeToDebug("setParentDevice in Debug",DEBUG_FILE);
-	echo setParentDevice();
+writeToDebug("setParent - waterOnSliderValMins = ". $_POST['waterOnSliderValMins'] ,DEBUG_FILE);
+writeToDebug("setParent - moistureCheckSliderVal = ". $_POST['moistureCheckSliderVal'] ,DEBUG_FILE);
+writeToDebug("setParent - moistureThresholdMins = ". $_POST['moistureThresholdMins'] ,DEBUG_FILE);
+	// shane - the stuff is here
+	//echo setParentDevice();
+	echo setParentDevice($_POST['waterOnSliderValMins'],$_POST['moistureCheckSliderVal'],$_POST['moistureThresholdMins']);
 }
 
 if(isset($_POST['resetParentDevice'])) {
@@ -125,9 +130,9 @@ function readTemperature() {
     return json_encode(array('output' => 'Temp Read failed','success' => 0));
 }
 
-function setParentDevice() {
-//writeToDebug("setParentDeviceCalled()",DEBUG_FILE);
-	setParentState('SET','Shed2',120,60,30,50,30);
+function setParentDevice($waterOnSliderValMins,$moistureCheckSliderValMins,$moistureThresholdMins) {
+//writeToDebug("test thing is ".$testThing ,DEBUG_FILE);
+	setParentState('SET','Shed2',$waterOnSliderValMins,$moistureCheckSliderValMins,$moistureThresholdMins,1,2);
     return json_encode(array('output' => 'Set Parent Device','success' => 1));
 }
 

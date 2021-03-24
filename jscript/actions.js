@@ -128,13 +128,20 @@ console.log('Read Temperature submitted');
 
 // Set device to initialised and store values set on sliders
     $('#setParentControlForm').submit(function(e) {
+		var sliderValsMap = readFromSliders();
 		// clear status area
 		document.getElementById("statusArea").value = "";
         e.preventDefault();
         $.ajax({
             type: "POST",
             url: '../utilities/actions.php',
-            data: {"setParentDevice" : "1"},
+			// below known good
+            //data: {"setParentDevice" : "1"},
+            data: {"setParentDevice" : "1", 
+					"waterOnSliderValMins" : sliderValsMap.get('waterOnSliderValMins'),
+					"moistureCheckSliderVal" : sliderValsMap.get('moistureCheckSliderVal'),
+					"moistureThresholdMins" : sliderValsMap.get('moistureThresholdMins'),
+					},
             success: function(response)
             {
 //console.log(response);

@@ -140,7 +140,8 @@ if(!deviceInitialised()) {
 									<button type="submit" name="temperatureButton" id="temperatureButton"
 										style="color:#ff8c00"
 										onclick="document.getElementById('settings').style.visibility='visible';
-												$('#setParentControlForm').submit();"> 
+												//$('#setParentControlForm').submit();
+										"> 
 										Settings</button>
 								</form>
 							</td>
@@ -229,6 +230,7 @@ if(!deviceInitialised()) {
 													style="color:#ff0000"
 													onclick="if(confirm('Reset device?')){
 																console.log('Reset device confirmed');
+																document.getElementById('settings').style.visibility='hidden';
 																$('#resetParentControlForm').submit(); 
 															} 
 															else {

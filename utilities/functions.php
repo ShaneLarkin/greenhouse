@@ -112,12 +112,6 @@ function deviceInitialised() {
 	// close database
 	closeDatabase($db);
 
-	//writeToDebug('stage',DEBUG_FILE);
-	//writeToDebug($results['stage'],DEBUG_FILE);
-
-	//writeToDebug('state',"thing");
-	//writeToDebug($results['state'],DEBUG_FILE);
-
 	// 'yes' if initialised
 	if($results['state'] == 'yes') {
 		return true;
@@ -125,8 +119,12 @@ function deviceInitialised() {
 	return false;
 }
 
-function setParentState($action, $deviceName,$defaultSecsForWaterToRun,$temperatureReadRefreshSecs,
-						$moistureCheckIntervalMins,$drySoilWateringThreshold,
+function setParentState($action, 
+						$deviceName,
+						$defaultSecsForWaterToRun,
+						$temperatureReadRefreshSecs,
+						$moistureCheckIntervalMins,
+						$drySoilWateringThreshold,
 						$heightTriggerCms) {
 
 	$action = strtoupper($action);

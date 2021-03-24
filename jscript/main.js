@@ -90,31 +90,38 @@ function showValueInSlider(sliderVal, outputDisplayID) {
 }
 
 // get slider values from json and populate
+// return an array containing 
 function populateSliders($jsonData) {
-console.log($jsonData);
-document.getElementById('waterOnMinsOP').value = $jsonData.defaultSecsForWaterToRun;
-document.getElementById('waterOnMinsSlide').value = $jsonData.defaultSecsForWaterToRun;
+	console.log($jsonData);
+	document.getElementById('waterOnMinsOP').value = $jsonData.defaultSecsForWaterToRun;
+	document.getElementById('waterOnMinsSlide').value = $jsonData.defaultSecsForWaterToRun;
 
-// = jsonData.temperatureReadRefreshSecs;
+	// = jsonData.temperatureReadRefreshSecs;
 
-document.getElementById('moistureCheckMinsOP').value = $jsonData.moistureCheckIntervalMins;
-document.getElementById('moistureCheckMinsSlide').value = $jsonData.moistureCheckIntervalMins;
+	document.getElementById('moistureCheckMinsOP').value = $jsonData.moistureCheckIntervalMins;
+	document.getElementById('moistureCheckMinsSlide').value = $jsonData.moistureCheckIntervalMins;
 
 
-document.getElementById('moistureThresholdOP').value = $jsonData.drySoilWateringThreshold;
-document.getElementById('moistureThresholdSlide').value = $jsonData.drySoilWateringThreshold;
+	document.getElementById('moistureThresholdOP').value = $jsonData.drySoilWateringThreshold;
+	document.getElementById('moistureThresholdSlide').value = $jsonData.drySoilWateringThreshold;
 
-// = jsonData.heightTriggerrCms;
+	// = jsonData.heightTriggerrCms;
 
 }
-
+// return a "map" array of current slider values
 function readFromSliders() {
 	//collect the slider readings
-alert(document.getElementById('waterOnMinsOP').value);
-alert(document.getElementById('moistureCheckMinsOP').value);
-alert(document.getElementById('moistureThresholdOP').value);
-	// send them to the database
+	//alert(document.getElementById('waterOnMinsOP').value);
+	//alert(document.getElementById('moistureCheckMinsOP').value);
+	//alert(document.getElementById('moistureThresholdOP').value);
+	// Javascript doesn't have associative arrays, so we'll use a map (could use an object but I shun them :-) )
+	var sliderValArr = new Map( [
+		['waterOnSliderValMins',document.getElementById('waterOnMinsOP').value],
+		['moistureCheckSliderVal',document.getElementById('moistureCheckMinsOP').value],
+		['moistureThresholdMins',document.getElementById('moistureThresholdOP').value],
 
-	// tell that all is good
+	]);
+	
+	return sliderValArr;
 }
 
